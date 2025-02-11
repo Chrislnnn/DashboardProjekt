@@ -198,7 +198,6 @@ class Login(tkinter.Tk):
         self.dashboard.initialize(student, study)
         # Alle anderen Seiten schließen
         self.login_page.pack_forget()
-        self.subpage.pack_forget()
 
         # Dashboard verpacken
         self.dashboard.pack(fill="both", expand=True)
