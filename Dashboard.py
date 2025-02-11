@@ -1,8 +1,8 @@
 import tkinter
 from tkinter import *
 from tkinter import messagebox
-from Course import Course
 import sqlite3
+from Course import Course
 from Exam import Exam
 from Project import Project
 
