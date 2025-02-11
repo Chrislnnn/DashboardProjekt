@@ -1,16 +1,10 @@
 import tkinter
-from os.path import split
 from tkinter import *
 from tkinter import messagebox
-from turtledemo.paint import switchupdown
-
 from Course import Course
 import sqlite3
-
 from Exam import Exam
 from Project import Project
-from Student import Student
-from Subpage import Subpage
 
 
 class Dashboard(tkinter.Frame):
