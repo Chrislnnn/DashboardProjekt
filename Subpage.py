@@ -9,14 +9,14 @@ class Subpage(tkinter.Frame):
         self.controller = controller
 
         # Methode, die aufgerufen wird, wenn der Nutzer auf den Dashboard-Button klickt
-        def mainPageClick(self):
+        def main_page_click(self):
             self.pack_forget()
             self.controller.dashboard.pack(fill="both", expand=True)
 
         # Methode, die aufgerufen wird, wenn der Nutzer auf einen Unterseiten-Button klickt
-        def subpageClick(self):
-            navigateToSubpage = Label(self, text="Dieser Button könnte an eine andere Unterseite weiterleiten!")
-            navigateToSubpage.pack()
+        def subpage_click(self):
+            navigate_to_subpage_label = Label(self, text="Dieser Button könnte an eine andere Unterseite weiterleiten!")
+            navigate_to_subpage_label.pack()
 
         # Methode, die die aktiven und abgeschlossen Kurse aus den Tabellen in der Datenbank ausgeben soll
         def query(self):
@@ -62,11 +62,11 @@ class Subpage(tkinter.Frame):
         navigation_frame.pack(padx=10, pady=10)
 
         # Buttons für das Öffnen der Unterseiten erstellen
-        subpage_button_1 = Button(navigation_frame, text="Dashboard", command=lambda: mainPageClick(self), fg="black", bg="grey",padx=40, pady=20)
-        subpage_button_2 = Button(navigation_frame, text="Unterseite 1", command=lambda: subpageClick(self), fg="black", bg="grey",padx=40, pady=20)
-        subpage_button_3 = Button(navigation_frame, text="Unterseite 2", command=lambda: subpageClick(self), fg="black", bg="grey",padx=40, pady=20)
-        subpage_button_4 = Button(navigation_frame, text="Unterseite 3", command=lambda: subpageClick(self), fg="black", bg="grey",padx=40, pady=20)
-        subpage_button_5 = Button(navigation_frame, text="Unterseite 4", command=lambda: subpageClick(self), fg="black", bg="grey",padx=40, pady=20)
+        subpage_button_1 = Button(navigation_frame, text="Dashboard", command=lambda: main_page_click(self), fg="black", bg="grey",padx=40, pady=20)
+        subpage_button_2 = Button(navigation_frame, text="Unterseite 1", command=lambda: subpage_click(self), fg="black", bg="grey",padx=40, pady=20)
+        subpage_button_3 = Button(navigation_frame, text="Unterseite 2", command=lambda: subpage_click(self), fg="black", bg="grey",padx=40, pady=20)
+        subpage_button_4 = Button(navigation_frame, text="Unterseite 3", command=lambda: subpage_click(self), fg="black", bg="grey",padx=40, pady=20)
+        subpage_button_5 = Button(navigation_frame, text="Unterseite 4", command=lambda: subpage_click(self), fg="black", bg="grey",padx=40, pady=20)
 
         # Positionierung der Buttons für die Unterseite
         subpage_button_1.grid(row=0, column=0, padx=50)
@@ -76,25 +76,25 @@ class Subpage(tkinter.Frame):
         subpage_button_5.grid(row=0, column=4, padx=50)
 
         # Erstelle ein Frame für die Darstellung der aktuellen Kurse und der abgeschlossenen Kurse
-        courseFrame = LabelFrame(self, text="Kurse", padx=0, pady=50)
-        courseFrame.pack(padx=10, pady=10)
+        course_frame = LabelFrame(self, text="Kurse", padx=0, pady=50)
+        course_frame.pack(padx=10, pady=10)
 
         # Label für die aktiven Kurse (Überschrift)
-        current_courses_label = Label(courseFrame, text="Aktuelle Kurse")
+        current_courses_label = Label(course_frame, text="Aktuelle Kurse")
         current_courses_label.grid(row=0, column=0, pady=10, padx=10)
         # Label für die aktiven Kurse (Für die Ausgabe der Liste an Kursen)
-        current_courses = Label(courseFrame, text="")
+        current_courses = Label(course_frame, text="")
         current_courses.grid(row=1, column=0, pady=10, padx=10)
 
         # Label für die abgeschlossenen Kurse (Überschrift)
-        finished_courses_label = Label(courseFrame, text="Abgeschlossene Kurse")
+        finished_courses_label = Label(course_frame, text="Abgeschlossene Kurse")
         finished_courses_label.grid(row=0, column=1, pady=10, padx=10)
         # Label für die abgeschlossenen Kurse (Für die Ausgabe der Liste an Kursen)
-        finished_courses = Label(courseFrame, text="")
+        finished_courses = Label(course_frame, text="")
         finished_courses.grid(row=1, column=1, pady=10, padx=10)
 
         # Hinweis
-        info_text = Label(courseFrame, text="Die Liste wird erst nach einem Neustart aktualisiert!")
+        info_text = Label(course_frame, text="Die Liste wird erst nach einem Neustart aktualisiert!")
         info_text.grid(row=2, columnspan=2, pady=10, padx=10)
 
         # Alle aktiven und abgeschlossenen Kurse aus der Datenbank ausgeben

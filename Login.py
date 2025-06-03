@@ -3,6 +3,7 @@ import tkinter
 from tkinter import ttk, messagebox
 from Dashboard import Dashboard
 from Student import Student
+from Subpage import Subpage
 
 
 class Login(tkinter.Tk):
@@ -10,6 +11,7 @@ class Login(tkinter.Tk):
         super().__init__()
         self.title("Pyhton Project")
         self.dashboard = Dashboard(self, self)
+        self.subpage = Subpage(self, self)
 
         # Definierte Auswahl an möglichen Studiengängen (der einfachheit halber nur 2)
         # Diese werden die voreingestellten Kurse im Dashboard beeinflussen

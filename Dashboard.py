@@ -15,12 +15,9 @@ class Dashboard(tkinter.Frame):
         self.button_count = 1
         self.semester = 1
         self.course_buttons = {}
-        # Liste für die aktiven und abgeschlossenen Kurse
-        self.current_courses = []
-        self.finished_courses = []
 
-        # Methode zum Initialisieren der Datenbank und den darin vorhanden Tabellen
-        def initialize_databank():
+        # Methode zum Initialisieren der Datenbank und den darin vorhanden Tabellen (wurde beim ersten Starten aufgerufen, damit die study_database.db erstellt wurde)
+        def initialize_database():
             # Eine Datenbank muss erstellt werden
             conn = sqlite3.connect('study_database.db')
 
@@ -54,7 +51,7 @@ class Dashboard(tkinter.Frame):
             conn.close()
 
         # Methode zum Löschen der Tabellen in der Datenbank (dies war bei Änderungen und Testungen relevant)
-        def reset_databank():
+        def reset_database():
             # Datenbank öffnen
             conn = sqlite3.connect('study_database.db')
             # Cursor erstellen
@@ -71,7 +68,7 @@ class Dashboard(tkinter.Frame):
             conn.close()
 
         # Methode zum Entfernen eines Kurs-Buttons (wird aufgerufen, wenn ein Kurs abgeschlossen wird und somit nicht mehr aktiv ist)
-        def removeCourseButton(self, course_name):
+        def remove_course_button(self, course_name):
             # Entfernt den Button eines bestimmten Kurses
             if course_name in self.course_buttons:
                 button = self.course_buttons.pop(course_name)
@@ -81,7 +78,7 @@ class Dashboard(tkinter.Frame):
                 self.button_count -= 1
 
         # Methode zum Aufrufen eines Kurses (ein neues Fenster wird dafür erstellt)
-        def openCoursePage(self, course_name):
+        def open_course_page(self, course_name):
             editor = Toplevel()
             editor.title('Kurs Darstellung')
             editor.geometry('500x500')
@@ -112,7 +109,7 @@ class Dashboard(tkinter.Frame):
                                })
 
                 # Entferne Button vom Kurs
-                removeCourseButton(self, course_details[0])
+                remove_course_button(self, course_details[0])
 
                 # Änderungen speichern
                 conn.commit()
@@ -180,12 +177,12 @@ class Dashboard(tkinter.Frame):
         def create_course_button(course_name):
             self.button_count += 1
             # Erstelle einen neuen Button für den hinzugefügten Kurs
-            newButton = Button(courseFrame, text=course_name, command=lambda: openCoursePage(self, course_name), fg="black", bg="grey", height=15, width=40)
+            new_button = Button(course_frame, text=course_name, command=lambda: open_course_page(self, course_name), fg="black", bg="grey", height=15, width=40)
             # Positionierung (Reihe und Spalte) des Buttons im grid mithilfe des button_count berechnen
             row = (self.button_count - 1) // 4
             column = (self.button_count - 1) % 4
-            self.course_buttons[course_name] = newButton
-            newButton.grid(row=row, column=column, padx=50, pady=50)
+            self.course_buttons[course_name] = new_button
+            new_button.grid(row=row, column=column, padx=50, pady=50)
 
         # Methode, die alle Noten in einem neuen Fenster darstellt
         def display_grades(self):
@@ -194,10 +191,10 @@ class Dashboard(tkinter.Frame):
             editor.title('Noten')
 
             # Kurse Label
-            courseFrame = LabelFrame(editor, text="Kurse", padx=0, pady=0)
-            courseFrame.pack()
+            course_frame = LabelFrame(editor, text="Kurse", padx=0, pady=0)
+            course_frame.pack()
             # Textfeld für Liste der Noten
-            finished_courses = Label(courseFrame, text="")
+            finished_courses = Label(course_frame, text="")
             finished_courses.grid(row=1, column=1, pady=30, padx=30)
 
             # Datenbank öffnen
@@ -227,7 +224,7 @@ class Dashboard(tkinter.Frame):
             conn.close()
 
         # Methoden für Erstellung eines neuen Kurses
-        def addNewCourse(self):
+        def add_new_course(self):
             if (self.button_count > 7):
                 # Warnung, wenn zu viele aktive Kurse vorhanden sind
                 messagebox.showinfo("Übernimm dich nicht", "Bitte schließe erst mal Kurse ab, bevor du weitere startest!")
@@ -349,7 +346,7 @@ class Dashboard(tkinter.Frame):
 
         # Methode für Berechnung der Durchschnittsnote
         def calculate_average_grade(self):
-            averageGrade = 0
+            average_grade = 0
 
             # Datenbank öffnen
             conn = sqlite3.connect('study_database.db')
@@ -365,19 +362,19 @@ class Dashboard(tkinter.Frame):
             records = cursor.fetchall()
 
             grade_sum = 0
-            averageGrade = 0
+            average_grade = 0
             # Berechnung basierend auf Einträge der Noten in der Datenbank
             if records:
                 for record in records:
                     grade_sum += record[2]
-                averageGrade = grade_sum / record_count
+                average_grade = grade_sum / record_count
 
             # Änderungen speichern
             conn.commit()
             # Schließen der Verbindung
             conn.close()
 
-            return averageGrade
+            return average_grade
 
         # Methode für Berechnung des Fortschritts
         def calculate_progress(self):
@@ -447,33 +444,33 @@ class Dashboard(tkinter.Frame):
         self.semester_information.pack()
 
         # Erstelle ein Frame für die Darstellung der Navigationselemente
-        navigationFrame = LabelFrame(self, text="Navigationsleiste", padx=0, pady=20)
-        navigationFrame.pack(fill='x', expand=False)
-        navigationFrame.pack(padx=10, pady=10)
+        navigation_frame = LabelFrame(self, text="Navigationsleiste", padx=0, pady=20)
+        navigation_frame.pack(fill='x', expand=False)
+        navigation_frame.pack(padx=10, pady=10)
 
         # Erstelle Buttons für das Öffnen der Unterseiten
-        subpageButton1 = Button(navigationFrame, text="Dashboard", fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
-        subpageButton2 = Button(navigationFrame, text="Unterseite 1", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
-        subpageButton3 = Button(navigationFrame, text="Unterseite 2", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
-        subpageButton4 = Button(navigationFrame, text="Unterseite 3", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
-        subpageButton5 = Button(navigationFrame, text="Unterseite 4", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
+        subpage_button1 = Button(navigation_frame, text="Dashboard", fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
+        subpage_button2 = Button(navigation_frame, text="Unterseite 1", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
+        subpage_button3 = Button(navigation_frame, text="Unterseite 2", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
+        subpage_button4 = Button(navigation_frame, text="Unterseite 3", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
+        subpage_button5 = Button(navigation_frame, text="Unterseite 4", command=lambda: subpage_click(self), fg="black", bg="grey",padx=50, pady=20, height=1, width=15)
 
         # Positionierung der Buttons für die Unterseite
-        subpageButton1.grid(row=0, column=0, padx=50)
-        subpageButton2.grid(row=0, column=1, padx=50)
-        subpageButton3.grid(row=0, column=2, padx=50)
-        subpageButton4.grid(row=0, column=3, padx=50)
-        subpageButton5.grid(row=0, column=4, padx=50)
+        subpage_button1.grid(row=0, column=0, padx=50)
+        subpage_button2.grid(row=0, column=1, padx=50)
+        subpage_button3.grid(row=0, column=2, padx=50)
+        subpage_button4.grid(row=0, column=3, padx=50)
+        subpage_button5.grid(row=0, column=4, padx=50)
 
         # Erstelle ein Frame für die Darstellung der Kurse
-        courseFrame = LabelFrame(self, text="Kurse", padx=0, pady=20)
-        courseFrame.pack(fill='x', expand=False)
-        courseFrame.pack(padx=10, pady=10)
+        course_frame = LabelFrame(self, text="Kurse", padx=0, pady=20)
+        course_frame.pack(fill='x', expand=False)
+        course_frame.pack(padx=10, pady=10)
 
         # Button für das Hinzufügen von Kursen
-        addCourse_button = Button(courseFrame, text="Kurs hinzufügen", command=lambda: addNewCourse(self), fg="black",bg="grey", height=15, width=40)
+        add_course_button = Button(course_frame, text="Kurs hinzufügen", command=lambda: add_new_course(self), fg="black",bg="grey", height=15, width=40)
         # Positionierung des Buttons
-        addCourse_button.grid(row=0, column=0, padx=50, pady=50)
+        add_course_button.grid(row=0, column=0, padx=50, pady=50)
 
 
         # Wenn Einträge in der Datenbank über aktuelle Kurse bestehen, so müssen diese ebenfalls hinzugefügt werden
